@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.devtools.network.Network
 import java.net.URLDecoder
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -51,7 +53,8 @@ class CeairService {
                 Pair("Origin", "http://www.ceair.com"),
                 Pair(
                     "Referer",
-                    "http://www.ceair.com/booking/sha-pek-200824_CNY.html"
+                    "http://www.ceair.com/booking/sha-pek-${OffsetDateTime.now().plusDays(1)
+                        .format(DateTimeFormatter.ofPattern("yyMMdd"))}_CNY.html"
                 ),
                 Pair("Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"),
                 Pair(
@@ -70,6 +73,7 @@ class CeairService {
             setHeadless(true)
             addArguments(
                 "--no-sandbox",
+                "--disable-gpu",
                 "--disable-images",
                 "--user-agent = Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7"
             )
@@ -99,8 +103,9 @@ class CeairService {
         driver["http://www.ceair.com/booking/sha-pek-200824_CNY.html"]
         driver.manage().cookies.joinToString(separator = "; ", transform = { "${it.name}=${it.value}" }).also {
             print("捕获到的cookie${it}")
-            this.cookie = it;
+            this.cookie = it
         }
+        //
         Thread.sleep(10000)
         // 5.退出浏览器
         driver.quit()

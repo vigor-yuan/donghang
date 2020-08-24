@@ -61,4 +61,11 @@ data class Segment(
      * 到达机场
      */
     val arrAirport: String = ""
-)
+
+) {
+    companion object {
+        fun fromConfig(c: SegmentConfig): Segment {
+            return Segment(c.arrCd, c.arrCdTxt, c.arrCityCode, c.deptCd, c.deptCdTxt, c.deptCityCode, c.deptDt)
+        }
+    }
+}
