@@ -7,12 +7,11 @@ data class Curl(
     val host: String,
     val headers: Map<String, String>,
     val body: String,
-    val cookie: String = "",
     val opts: List<String> = emptyList()
 ) {
     fun <T> exec(clazz: Class<T>): T? {
         //默认为json
-        val opt = CUrl(host).headers(headers).cookie(cookie).data(body).opt(opts)
+        val opt = CUrl(host).headers(headers).data(body).opt(opts)
         println("请求参数$opt")
         val resp: String? = opt.exec(null)
         println(resp)
@@ -23,9 +22,7 @@ data class Curl(
 
 private fun CUrl.opt(opts: List<String>): CUrl {
     for (o in opts) {
-        options.add(o.takeIf { it.startsWith("'") && it.endsWith("'") }?.let {
-            it.substring(1, o.length - 1)
-        } ?: o)
+        options.add(o.takeIf { it.startsWith("'") && it.endsWith("'") }?.substring(1, o.length - 1) ?: o)
     }
     return this
 }

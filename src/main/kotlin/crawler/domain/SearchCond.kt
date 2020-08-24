@@ -1,16 +1,12 @@
 package crawler.domain
 
-import com.google.gson.annotations.SerializedName
 import crawler.Constants
 
-data class SearchReq(
-    @SerializedName("_") val seriesid: String,
-    val searchCond: SearchCond
-)
+data class P(val seriesid: String)
 
 data class SearchCond(
-    val seriesid: String,
     val segmentList: List<Segment>,
+    var seriesid: String = "",
     val adtCount: Int = 1,
     val chdCount: Int = 0,
     val currency: String = "CNY",
