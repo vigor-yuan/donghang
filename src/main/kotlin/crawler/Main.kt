@@ -12,7 +12,7 @@ fun main() {
 
     FlightConfig.read().config.forEach { c ->
         c.segmentList.forEach { s ->
-            //抓取航班
+            //抓取所有经济舱航班
             val products = ceairService.doSearch(SearchCond(listOf(Segment.fromConfig(s))))
                 ?.let { it.searchProduct.filter { p -> p.cabin.baseCabinCode == "economy" } } ?: emptyList()
             println("抓取到的经济舱航班信息$products")
@@ -25,7 +25,7 @@ fun main() {
                 val template = "${s.deptDt} ${s.deptCdTxt} 到 ${s.arrCdTxt} 的 $no 次航班已经有票啦，赶快抢吧，手慢无！！！"
                 MailService.send(template, c.email)
             }
-            //隔一秒再抓取
+            //隔3秒再抓取
             sleep(3000)
         }
     }

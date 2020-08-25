@@ -1,7 +1,6 @@
 package crawler.domain
 
 import crawler.Constants
-import java.io.File
 
 //抓取航线配置
 data class FlightConfig(
@@ -10,22 +9,17 @@ data class FlightConfig(
     companion object {
         fun read(): FlightConfig {
             return try {
-                File("src/main/resources/config.json").bufferedReader().let {
-                    Constants.gson.fromJson<FlightConfig>(it, FlightConfig::class.java)
-                }.also {
-                    println("读取的配置信息$it")
-                }
+                this::class.java.getResourceAsStream("/config.json")
+                    .bufferedReader().let {
+                        Constants.gson.fromJson<FlightConfig>(it, FlightConfig::class.java)
+                    }.also {
+                        println("读取的配置信息$it")
+                    }
             } catch (e: Exception) {
                 println(e)
                 throw e
             }
         }
-    }
-
-    //写入
-    fun write() {
-        File("src/main/resources/config.json").bufferedWriter()
-            .write(Constants.gson.toJson(this))
     }
 }
 

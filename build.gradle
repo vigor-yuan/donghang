@@ -9,6 +9,13 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes "Manifest-Version": 1.0,
+                'Main-Class': 'crawler.MainKt'
+    } from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

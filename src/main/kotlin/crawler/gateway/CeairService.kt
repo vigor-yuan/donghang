@@ -33,7 +33,7 @@ class CeairService {
     }
 
     /**
-     * 搜索接口
+     * 搜索航班接口
      */
     fun doSearch(
         searchCond: SearchCond
@@ -67,8 +67,8 @@ class CeairService {
 
     private fun getSeriesIdAndCookie() {
         //拿到seriesId 和 cookie
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        ChromeOptions().apply {
+//        System.setProperty("webdriver.chrome.driver", this::class.java.getResource("/chromedriver").toURI().path);
+        val options = ChromeOptions().apply {
             //设置无头
             setHeadless(true)
             addArguments(
@@ -78,7 +78,7 @@ class CeairService {
                 "--user-agent = Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/604.4.7 (KHTML, like Gecko) Version/11.0.2 Safari/604.4.7"
             )
         }
-        val driver = ChromeDriver()
+        val driver = ChromeDriver(options)
         driver.devTools.apply {
             //从链接中获取seriesId
             createSession()
@@ -100,7 +100,8 @@ class CeairService {
                 }
             }
         }
-        driver["http://www.ceair.com/booking/sha-pek-200824_CNY.html"]
+        driver["http://www.ceair.com/booking/sha-pek-${OffsetDateTime.now().plusDays(1)
+            .format(DateTimeFormatter.ofPattern("yyMMdd"))}_CNY.html"]
         driver.manage().cookies.joinToString(separator = "; ", transform = { "${it.name}=${it.value}" }).also {
             print("捕获到的cookie${it}")
             this.cookie = it
