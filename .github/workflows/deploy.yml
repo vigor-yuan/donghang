@@ -14,4 +14,4 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew jar
       - name: run
-        run: java -jar /target/donghang-1.0-SNAPSHOT.jar
+        run: java -jar build/libs/donghang-1.0-SNAPSHOT.jar
