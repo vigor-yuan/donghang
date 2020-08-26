@@ -13,8 +13,6 @@ jobs:
           java-version: 1.8
       - name: Build with Gradle
         run: ./gradlew jar
-      - name: run
-        run: java -jar build/libs/donghang-1.0-SNAPSHOT.jar
       - name: SSH and SCP Setup
         uses: alinz/ssh-scp-action@v0.1.1
         with:
