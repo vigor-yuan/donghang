@@ -15,3 +15,24 @@ jobs:
         run: ./gradlew jar
       - name: run
         run: java -jar build/libs/donghang-1.0-SNAPSHOT.jar
+      - name: SSH and SCP Setup
+        uses: alinz/ssh-scp-action@v0.1.1
+        with:
+          # ssh remote host
+          host: 106.14.192.37
+          # ssh remote port
+          port: 22
+          # ssh user
+          user: root
+          # content of ssh private key. ex raw content of ~/.ssh/id_rsa
+          key: ${{ secrets.PRIVATE_KEY}}
+          connect_timeout: 20s
+          # execute commands before SCP
+          ssh_before: |
+            rm -rf /root/donghang/donghang-1.0-SNAPSHOT.jar
+          # scp local and remote
+          scp: |
+            ./build/libs/donghang-1.0-SNAPSHOT.jar => '/root/donghang/'
+          # execute commands after SCP
+          ssh_after: |
+            java -jar /root/donghang/donghang-1.0-SNAPSHOT.jar
