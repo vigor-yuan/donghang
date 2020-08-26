@@ -13,29 +13,5 @@ jobs:
           java-version: 1.8
       - name: Build with Gradle
         run: ./gradlew jar
-
-#name: remote ssh command
-#on: [push]
-#jobs:
-#  build:
-#    name: Build
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: scp
-#        uses: garygrossgarten/github-action-scp@release
-#        with:
-#          local: xxx 本地文件
-#          remote: xxx 远程文件
-#          host: ${{ secrets.DOCKER_IP }}
-#          username: ${{ secrets.DOCKER_ID }}
-#          password: ${{ secrets.DOCKER_PASSWORD }}
-#          port: ${{ secrets.DOCKER_PORT }}
-#
-#      - name: executing remote ssh commands using password
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.HOST }}
-#          username: ${{ secrets.USERNAME }}
-#          password: ${{ secrets.PASSWORD }}
-#          port: ${{ secrets.PORT }}
-#          script: whoami
+      - name: run
+        run: java -jar /target/donghang-1.0-SNAPSHOT.jar
