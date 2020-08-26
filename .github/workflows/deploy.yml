@@ -17,11 +17,11 @@ jobs:
         uses: alinz/ssh-scp-action@v0.1.1
         with:
           # ssh remote host
-          host: 106.14.192.37
+          host: ${{ secrets.IP}}
           # ssh remote port
-          port: 22
+          port: ${{ secrets.PORT}}
           # ssh user
-          user: root
+          user:  ${{ secrets.USER}}
           # content of ssh private key. ex raw content of ~/.ssh/id_rsa
           key: ${{ secrets.PRIVATE_KEY}}
           connect_timeout: 20s
