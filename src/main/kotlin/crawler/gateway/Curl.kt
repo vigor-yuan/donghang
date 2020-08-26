@@ -1,7 +1,7 @@
 package crawler.gateway
 
 import com.roxstudio.utils.CUrl
-import crawler.Constants
+import crawler.gson
 
 data class Curl(
     val host: String,
@@ -15,7 +15,7 @@ data class Curl(
         println("请求参数$opt")
         val resp: String? = opt.exec(null)
         println(resp)
-        return resp?.let { Constants.gson.fromJson(it, clazz) }
+        return resp?.let { gson.fromJson(it, clazz) }
     }
 }
 

@@ -1,9 +1,9 @@
 package crawler.gateway
 
-import crawler.Constants
 import crawler.domain.FlightSearchResp
 import crawler.domain.P
 import crawler.domain.SearchCond
+import crawler.gson
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.devtools.network.Network
@@ -92,7 +92,7 @@ class CeairService {
                     URLDecoder.decode(it, "UTF-8").substringAfter("p=")
                 }?.let {
                     //转json获取seriesId
-                    Constants.gson.fromJson(it, P::class.java).seriesid
+                    gson.fromJson(it, P::class.java).seriesid
                 }?.also {
                     //暂存
                     println("解析出来的seriesId = $it")

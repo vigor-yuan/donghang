@@ -1,6 +1,6 @@
 package crawler.domain
 
-import crawler.Constants
+import crawler.gson
 
 data class P(val seriesid: String)
 
@@ -20,7 +20,7 @@ data class SearchCond(
     val version: String = "A.1.0"
 ) {
     fun toJson(): String {
-        return Constants.gson.toJson(this)
+        return gson.toJson(this)
     }
 }
 
