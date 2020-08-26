@@ -6,12 +6,19 @@ import crawler.domain.Segment
 import crawler.gateway.CeairService.Companion.ceairService
 import crawler.gateway.MailService
 import java.lang.Thread.sleep
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 fun main() {
 
     FlightConfig.read().config.forEach { c ->
-        c.segmentList.forEach { s ->
+        c.segmentList.filter { s ->
+            //过滤购票已经不足五天的行程
+            LocalDate.parse(s.deptDt, DateTimeFormatter.ofPattern("yyyy-MM-dd")).atTime(23, 59, 59)
+                .minusDays(5).isAfter(LocalDateTime.now())
+        }.forEach { s ->
             //抓取所有经济舱航班
             val products = ceairService.doSearch(SearchCond(listOf(Segment.fromConfig(s))))
                 ?.let { it.searchProduct.filter { p -> p.cabin.baseCabinCode == "economy" } } ?: emptyList()
