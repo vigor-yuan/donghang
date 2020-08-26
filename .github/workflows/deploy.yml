@@ -14,7 +14,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew jar
       - name: SSH and SCP Setup
-        uses: alinz/ssh-scp-action@v0.1.1
+        uses: alinz/ssh-scp-action@v0.1.2
         with:
           # ssh remote host
           host: ${{ secrets.IP}}
@@ -24,7 +24,6 @@ jobs:
           user:  ${{ secrets.USER}}
           # content of ssh private key. ex raw content of ~/.ssh/id_rsa
           key: ${{ secrets.PRIVATE_KEY}}
-          connect_timeout: 20s
           # execute commands before SCP
           ssh_before: |
             rm -rf /root/donghang/donghang-1.0-SNAPSHOT.jar
