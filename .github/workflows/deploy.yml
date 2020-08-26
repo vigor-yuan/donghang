@@ -14,7 +14,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew jar
       - name: SSH and SCP Setup
-        uses: alinz/ssh-scp-action@v0.1.2
+        uses: alinz/ssh-scp-action@master
         with:
           # ssh remote host
           host: ${{ secrets.IP}}
