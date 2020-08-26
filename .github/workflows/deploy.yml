@@ -5,11 +5,13 @@ on: [push]        #Action触发条件
 jobs:
   build:
   runs-on: ubuntu-latest    #运行环境
+  steps:
+    - uses: actions/checkout@v1    #获得你该仓库的v1分支
+    - name: Build with gradle
+      run: ./gradlew jar
 
-steps:
-  - uses: actions/checkout@v1    #获得你该仓库的v1分支
-  - name: Build with gradle
-    run: ./gradlew -B jar
+    - name: Build with gradle
+        run: java -jar /target/donghang-1.0-SNAPSHOT.jar
 
 #name: remote ssh command
 #on: [push]
