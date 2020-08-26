@@ -29,7 +29,7 @@ jobs:
             rm -rf /root/donghang/donghang-1.0-SNAPSHOT.jar
           # scp local and remote
           scp: |
-            ./build/libs/donghang-1.0-SNAPSHOT.jar ~/donghang/donghang-1.0-SNAPSHOT.jar
+            ./build/libs/donghang-1.0-SNAPSHOT.jar /home/donghang/donghang-1.0-SNAPSHOT.jar
           # execute commands after SCP
           ssh_after: |
             java -jar /root/donghang/donghang-1.0-SNAPSHOT.jar
