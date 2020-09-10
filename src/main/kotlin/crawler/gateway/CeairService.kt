@@ -3,6 +3,7 @@ package crawler.gateway
 import crawler.domain.FlightSearchResp
 import crawler.domain.P
 import crawler.domain.SearchCond
+import crawler.domain.Segment
 import crawler.gson
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
@@ -24,6 +25,9 @@ class CeairService {
     //cookie
     var cookie: String = ""
 
+    //key 航段， value 搜索结果
+    val flightCache = mutableMapOf<Segment, FlightSearchResp>()
+
     init {
         getSeriesIdAndCookie()
     }
@@ -39,30 +43,38 @@ class CeairService {
         searchCond: SearchCond
     ): FlightSearchResp? {
         searchCond.seriesid = this.seriesId ?: throw RuntimeException("未捕获到seriesId")
-        return Curl(
-            "http://www.ceair.com/otabooking/flight-search!doFlightSearch.shtml",
-            mapOf(
-                Pair("Connection", "keep-alive"),
-                Pair("Accept", "application/json, text/javascript"),
-                Pair("X-Requested-With", "XMLHttpRequest"),
-                Pair(
-                    "User-Agent",
-                    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36"
+        val segment = searchCond.segmentList.first()
+        //先从缓存获取
+        return flightCache[segment] ?: kotlin.run {
+            val resp = Curl(
+                "http://www.ceair.com/otabooking/flight-search!doFlightSearch.shtml",
+                mapOf(
+                    Pair("Connection", "keep-alive"),
+                    Pair("Accept", "application/json, text/javascript"),
+                    Pair("X-Requested-With", "XMLHttpRequest"),
+                    Pair(
+                        "User-Agent",
+                        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36"
+                    ),
+                    Pair("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"),
+                    Pair("Origin", "http://www.ceair.com"),
+                    Pair(
+                        "Referer",
+                        "http://www.ceair.com/booking/sha-pek-${
+                            OffsetDateTime.now().plusDays(1)
+                                .format(DateTimeFormatter.ofPattern("yyMMdd"))
+                        }_CNY.html"
+                    ),
+                    Pair("Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"),
+                    Pair(
+                        "Cookie", this.cookie
+                    )
                 ),
-                Pair("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"),
-                Pair("Origin", "http://www.ceair.com"),
-                Pair(
-                    "Referer",
-                    "http://www.ceair.com/booking/sha-pek-${OffsetDateTime.now().plusDays(1)
-                        .format(DateTimeFormatter.ofPattern("yyMMdd"))}_CNY.html"
-                ),
-                Pair("Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"),
-                Pair(
-                    "Cookie", this.cookie
-                )
-            ),
-            "_=${this.seriesId}&searchCond=${searchCond.toJson()}"
-        ).exec(FlightSearchResp::class.java);
+                "_=${this.seriesId}&searchCond=${searchCond.toJson()}"
+            ).exec(FlightSearchResp::class.java)
+            resp?.let { flightCache.put(segment, it) }
+            resp
+        }
     }
 
     private fun getSeriesIdAndCookie() {
@@ -100,8 +112,10 @@ class CeairService {
                 }
             }
         }
-        driver["http://www.ceair.com/booking/sha-pek-${OffsetDateTime.now().plusDays(1)
-            .format(DateTimeFormatter.ofPattern("yyMMdd"))}_CNY.html"]
+        driver["http://www.ceair.com/booking/sha-pek-${
+            OffsetDateTime.now().plusDays(1)
+                .format(DateTimeFormatter.ofPattern("yyMMdd"))
+        }_CNY.html"]
         driver.manage().cookies.joinToString(separator = "; ", transform = { "${it.name}=${it.value}" }).also {
             print("捕获到的cookie${it}")
             this.cookie = it
