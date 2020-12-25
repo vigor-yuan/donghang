@@ -1,8 +1,9 @@
 {
   "config": [
     {
+
       "email": "13093687239@163.com",
-      "name": "袁华健",
+      "name": "xxx",
       "segmentList": [
         {
           "arrCd": "KWE",
@@ -11,12 +12,14 @@
           "deptCd": "SHA",
           "deptCdTxt": "上海",
           "deptCityCode": "SHA",
-          "deptDt": "2020-09-05",
+          "deptDt": "2020-12-31",
           "flightNos": [
             "FM9459"
           ]
         }
       ]
     }
-  ]
+  ],
+  "sender": "13093687239@163.com",
+  "code": "xxx"
 }

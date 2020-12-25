@@ -5,7 +5,9 @@ import java.io.File
 
 //抓取航线配置
 data class FlightConfig(
-    val config: List<PersonConfig>
+    val config: List<PersonConfig>,
+    val sender: String,
+    val code: String
 ) {
     companion object {
         fun read(): FlightConfig {
