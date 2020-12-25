@@ -4,15 +4,21 @@
 
 随心飞总是抢不到，用这个脚本就可以监控航班余票，第一时间占座。
 
+可配置监控多个航段
+
 #### 原理
 
 爬取东航官网搜索航班接口，并以邮件通知用户。爬取的是东航web端的接口，东航手机端有5-10分钟的延迟，所以web端放票后，在手机端不停刷票即可。注意频率，频率过快会被认定为爬虫被ban。
 
 #### 使用
 
-1. 本地安装 [ChromeDriver](https://chromedriver.chromium.org/) 和 [Chrome](https://www.google.com/intl/zh-CN/chrome/)浏览器，两者版本需要保持一致
+1. 运行环境
 
-2. 配置config.json
+   1. Java运行环境
+   2. 本地安装 [ChromeDriver](https://chromedriver.chromium.org/) 和 [Chrome](https://www.google.com/intl/zh-CN/chrome/)浏览器，两者版本需要保持一致
+   3. 把 [donghang.jar](https://github.com/TonyPhoneix/donghang/blob/master/donghang-1.0-SNAPSHOT.jar)下载到本地
+
+2. 在donghang.jar的目录新建文件config.json
 
    支持配置多个航段，一个航段可配置搜索多个航班号
 
@@ -25,15 +31,15 @@
          "name": "xxx", //接受者姓名
          "segmentList": [ //航段
            {
-             "arrCd": "KWE", // 到达地代码
-             "arrCdTxt": "贵阳", // 到达地
-             "arrCityCode": "KWE", // 到达地城市代码
-             "deptCd": "SHA", // 出发地代码
-             "deptCdTxt": "上海", // 出发地
-             "deptCityCode": "SHA",// 出发地代码
-             "deptDt": "2020-12-31", // 出发日期
+             "arrCd": "KWE", //到达地代码
+             "arrCdTxt": "贵阳", //到达地
+             "arrCityCode": "KWE", //到达地城市代码
+             "deptCd": "SHA", //出发地代码
+             "deptCdTxt": "上海", //出发地
+             "deptCityCode": "SHA",//出发地代码
+             "deptDt": "2020-12-31", //出发日期
              "flightNos": [
-               "FM9459" // 航班号
+               "FM9459" //航班号
              ]
            }
          ]
@@ -65,3 +71,5 @@
    ```
 
    
+
+
